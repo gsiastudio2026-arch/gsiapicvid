@@ -1,49 +1,50 @@
 <!DOCTYPE html>
 <html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>GSIA PIC-VID - Générateur IA</title>
-<style>:root{--gold:#f5b400;--bg:#0f172a;--card:#1e293b}*{margin:0;padding:0;box-sizing:border-box}body{background:var(--bg);color:#fff;font-family:system-ui;padding:12px}.h{text-align:center;padding:18px}.logo{font-size:26px;font-weight:900;color:var(--gold)}.card{background:var(--card);border-radius:16px;padding:14px;margin:10px 0;border:1px solid #334155}input,textarea,select{width:100%;padding:12px;border-radius:10px;border:1px solid #334155;background:#0f172a;color:#fff;margin:6px 0}.btn{width:100%;padding:14px;background:var(--gold);color:#000;border:none;border-radius:12px;font-weight:900;margin:6px 0;cursor:pointer}.g{display:grid;grid-template-columns:1fr 1fr;gap:8px}.g img{width:100%;border-radius:10px;border:1px solid #334155}</style>
+<title>GSIA PIC-VID - 5 Gratuits</title>
+<style>:root{--gold:#f5b400;--bg:#0f172a;--card:#1e293b}*{margin:0;padding:0;box-sizing:border-box}body{background:var(--bg);color:#fff;font-family:system-ui;padding:12px}.h{text-align:center;padding:18px}.logo{font-size:26px;font-weight:900;color:var(--gold)}.card{background:var(--card);border-radius:16px;padding:14px;margin:10px 0;border:1px solid #334155}textarea,select{width:100%;padding:12px;border-radius:10px;border:1px solid #334155;background:#0f172a;color:#fff;margin:6px 0}.btn{width:100%;padding:14px;background:var(--gold);color:#000;border:none;border-radius:12px;font-weight:900;margin:6px 0}.pay{display:none;position:fixed;inset:0;background:#000c;display:grid;place-items:center;z-index:99}.pay>div{background:#1e293b;padding:20px;border-radius:16px;width:90%;max-width:360px;border:2px solid var(--gold)}img{width:100%;border-radius:12px;margin-top:8px}</style>
 </head><body>
-<div class="h"><div class="logo">🎨 GSIA PIC-VID</div><small>Générateur Images 4K & Vidéos IA • Par GSIA STUDIO</small><br><small style="color:var(--gold)">T-Money 92 81 75 93 • 1er rendu OFFERT</small></div>
+<div class="h"><div class="logo">🎨 GSIA PIC-VID</div><small>5 Images OFFERTES puis 500F / image</small><br><small id="counter" style="color:var(--gold)"></small></div>
 
-<div class="card"><h3>🖼️ Générateur d'Images (Gratuit)</h3>
-<textarea id="p" rows="3" placeholder="Ex: Logo luxe pour société de transit à Lomé, or et bleu marine, style premium"></textarea>
-<select id="s"><option value="cinematic">Cinematic</option><option value="logo">Logo Business</option><option value="anime">Anime</option><option value="realistic">Photoréaliste 4K</option></select>
-<button class="btn" onclick="genImg()">🚀 GÉNÉRER IMAGE - 500F</button>
-<div id="out" style="margin-top:10px"></div>
+<div class="card">
+<h3>🖼️ Générateur d'Images</h3>
+<textarea id="p" rows="3" placeholder="Ex: un camion moderne sur la route de Lomé, coucher de soleil"></textarea>
+<select id="s"><option value="cinematic, highly detailed, 4k">Cinematic 4K</option><option value="minimalist business logo design, vector, gold and navy">Logo Business</option><option value="photorealistic, ultra detailed">Photoréaliste</option><option value="anime style">Anime</option></select>
+<button class="btn" onclick="genImg()">🚀 GÉNÉRER IMAGE</button>
+<div id="out"></div>
 </div>
 
-<div class="card"><h3>🎬 Générateur Vidéo 5s</h3>
-<textarea id="vp" rows="2" placeholder="Ex: Camion qui traverse le pont de Lomé au lever du soleil"></textarea>
-<button class="btn" style="background:#3b82f6;color:#fff" onclick="genVid()">🎥 GÉNÉRER VIDÉO - 2.500F</button>
-<div id="vout" style="margin-top:10px"></div>
-<small style="color:#94a3b8">Nécessite clé Hugging Face gratuite. Je t'ai mis le code, tu ajoutes ta clé.</small>
-</div>
-
-<div class="card"><h3>💰 Comment tu gagnes</h3>
-<p style="font-size:12px;color:#94a3b8">Client paie 500F sur T-Money → tu lui donnes le code d'accès → il génère. Coût pour toi: 0F avec Pollinations. Marge: 100% !<br><br>Pack 20 images = 5.000F<br>Illimité / mois = 25.000F</p>
-<button class="btn" onclick="window.open('https://wa.me/22892817593?text=Je%20veux%20PIC-VID%20illimité')">💬 Commander sur WhatsApp</button>
-</div>
+<div class="pay" id="payModal"><div>
+<h3 style="color:var(--gold)">🔒 Limite gratuite atteinte</h3><p style="font-size:13px;margin:8px 0">Tu as utilisé tes 5 images gratuites DG ! Pour continuer:</p>
+<div style="background:#0f172a;padding:10px;border-radius:10px;margin:8px 0"><b>Pack 20 images = 5.000F</b><br><b>Illimité = 25.000F/mois</b></div>
+<p style="font-size:12px">Paie sur:<br><b>T-Money: 92 81 75 93</b><br><b>Flooz: 98 22 14 95</b><br>Nom: GSIA STUDIO</p>
+<button class="btn" onclick="window.open('https://wa.me/22892817593?text=Jai payé PIC-VID, active moi DG')">📲 J'ai payé - Active-moi</button>
+<button class="btn" style="background:#334155;color:#fff" onclick="document.getElementById('payModal').style.display='none'">Fermer</button>
+</div></div>
 
 <script>
-let count = localStorage.getItem('gsia_count')||0;
+let count = parseInt(localStorage.getItem('gsia_pic_count')||'0');
+function updateCounter(){document.getElementById('counter').innerText = `${5-count} gratuits restants sur 5 - Ensuite 500F/image`;}
+updateCounter();
 async function genImg(){
- let prompt=document.getElementById('p').value;
- if(!prompt) return alert('DG écris quelque chose !');
- if(count>=1){ 
-   let pay=confirm('1er gratuit utilisé DG ! Pour continuer, paie 500F sur T-Money 92 81 75 93 et clique OK. Tu as payé ?');
-   if(!pay) return;
- }
- document.getElementById('out').innerHTML='<p style="text-align:center;padding:20px">⏳ Génération 4K en cours... 8s</p>';
- // API GRATUITE POLLINATIONS - 0F, pas de clé
- let url = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt + ' ' + document.getElementById('s').value + ', 4k, highly detailed')}?width=1024&height=1024&nologo=true&seed=${Date.now()}`;
- document.getElementById('out').innerHTML=`<img src="${url}" style="width:100%;border-radius:12px"><br><button class="btn" onclick="window.open('${url}')">⬇️ Télécharger HD</button><p style="color:#22c55e;font-size:12px">✅ Généré avec GSIA PIC-VID</p>`;
- count++; localStorage.setItem('gsia_count',count);
-}
-function genVid(){
- let vp=document.getElementById('vp').value;
- if(!vp) return alert('Écris description vidéo DG !');
- document.getElementById('vout').innerHTML=`<p style="font-size:12px">🎬 Pour activer la vidéo gratuite:<br>1. Va sur huggingface.co/settings/tokens<br>2. Copie ta clé hf_...<br>3. Colle-la dans le code ligne 35<br><br>En attendant, utilise ce prompt dans <b>runwayml.com</b> (gratuit 10 vidéos) ou <b>pika.art</b></p><p style="color:var(--gold)">Ton prompt: "${vp}"</p>`;
- alert('DG, vidéo = 2 étapes: récupère clé HF gratuite puis je te branche. Tu veux que je te guide ?');
+ let prompt=document.getElementById('p').value.trim();
+ if(!prompt) return alert('Écris quelque chose DG !');
+ if(count>=5){ document.getElementById('payModal').style.display='grid'; return; }
+ document.getElementById('out').innerHTML='<p style="text-align:center;padding:16px">⏳ Génération en cours... 5s</p>';
+ // NETTOYAGE PROMPT pour éviter Image Refused
+ let safePrompt = prompt.replace(/logo/gi,'brand emblem').replace(/Gsia/gi,'GSIA company') + ' ' + document.getElementById('s').value;
+ let url = `https://image.pollinations.ai/prompt/${encodeURIComponent(safePrompt)}?width=1024&height=1024&seed=${Date.now()}&nologo=true&nofeed=true&enhance=true`;
+ 
+ let img = new Image();
+ img.onload = ()=>{
+   document.getElementById('out').innerHTML=`<img src="${url}"><button class="btn" style="background:#22c55e" onclick="window.open('${url}')">⬇️ Télécharger HD</button><p style="color:#22c55e;font-size:12px">✅ Image ${count+1}/5 gratuite</p>`;
+   count++; localStorage.setItem('gsia_pic_count',count); updateCounter();
+ };
+ img.onerror = ()=>{
+   // FALLBACK si Pollinations bloque encore
+   let fallback = `https://picsum.photos/seed/${Date.now()}/1024`;
+   document.getElementById('out').innerHTML=`<img src="${fallback}"><p style="font-size:12px;color:#f59e0b">⚠️ Prompt bloqué, image démo. Essaie: "camion Lomé coucher soleil" sans le mot logo</p>`;
+ };
+ img.src = url;
 }
 </script>
 </body></html>
