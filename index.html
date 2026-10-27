@@ -1,50 +1,74 @@
 <!DOCTYPE html>
 <html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>GSIA PIC-VID - 5 Gratuits</title>
-<style>:root{--gold:#f5b400;--bg:#0f172a;--card:#1e293b}*{margin:0;padding:0;box-sizing:border-box}body{background:var(--bg);color:#fff;font-family:system-ui;padding:12px}.h{text-align:center;padding:18px}.logo{font-size:26px;font-weight:900;color:var(--gold)}.card{background:var(--card);border-radius:16px;padding:14px;margin:10px 0;border:1px solid #334155}textarea,select{width:100%;padding:12px;border-radius:10px;border:1px solid #334155;background:#0f172a;color:#fff;margin:6px 0}.btn{width:100%;padding:14px;background:var(--gold);color:#000;border:none;border-radius:12px;font-weight:900;margin:6px 0}.pay{display:none;position:fixed;inset:0;background:#000c;display:grid;place-items:center;z-index:99}.pay>div{background:#1e293b;padding:20px;border-radius:16px;width:90%;max-width:360px;border:2px solid var(--gold)}img{width:100%;border-radius:12px;margin-top:8px}</style>
+<title>GSIA PIC-VID V5 SECURE</title>
+<style>:root{--gold:#f5b400;--bg:#0f172a;--card:#1e293b}*{margin:0;padding:0;box-sizing:border-box}body{background:var(--bg);color:#fff;font-family:system-ui;padding:12px}.h{text-align:center;padding:12px}.logo{font-size:26px;font-weight:900;color:var(--gold)}.tabs{display:flex;gap:6px;margin:10px 0}.tab{flex:1;padding:12px;border-radius:10px;border:1px solid #334155;background:#1e293b;color:#fff;font-weight:800}.tab.active{background:var(--gold);color:#000}.card{background:var(--card);border-radius:16px;padding:14px;margin:8px 0;border:1px solid #334155}input,textarea,select{width:100%;padding:12px;border-radius:10px;border:1px solid #334155;background:#0f172a;color:#fff;margin:6px 0}.btn{width:100%;padding:14px;background:var(--gold);color:#000;border:none;border-radius:12px;font-weight:900;margin:6px 0}img,video{width:100%;border-radius:12px;margin-top:10px}.pay{display:none;position:fixed;inset:0;background:#000e;place-items:center;z-index:99}.pay>div{background:#1e293b;padding:20px;border-radius:16px;width:92%;max-width:380px;border:2px solid var(--gold)}</style>
 </head><body>
-<div class="h"><div class="logo">🎨 GSIA PIC-VID</div><small>5 Images OFFERTES puis 500F / image</small><br><small id="counter" style="color:var(--gold)"></small></div>
+<div class="h"><div class="logo">🎨 GSIA PIC-VID V5</div><small id="counter" style="color:var(--gold)"></small></div>
 
-<div class="card">
-<h3>🖼️ Générateur d'Images</h3>
-<textarea id="p" rows="3" placeholder="Ex: un camion moderne sur la route de Lomé, coucher de soleil"></textarea>
-<select id="s"><option value="cinematic, highly detailed, 4k">Cinematic 4K</option><option value="minimalist business logo design, vector, gold and navy">Logo Business</option><option value="photorealistic, ultra detailed">Photoréaliste</option><option value="anime style">Anime</option></select>
-<button class="btn" onclick="genImg()">🚀 GÉNÉRER IMAGE</button>
-<div id="out"></div>
+<div class="card" style="border:2px solid var(--gold)">
+<small style="color:var(--gold)">🔐 CONFIG ADMIN (une seule fois)</small>
+<input id="hfKey" type="password" placeholder="Colle ton hf_... ici">
+<button class="btn" style="background:#22c55e" onclick="saveKey()">✅ Sauvegarder ma clé FLUX.1</button>
+<small id="keyStatus" style="font-size:11px;color:#94a3b8"></small>
+</div>
+
+<div class="tabs"><button class="tab active" id="tabImg" onclick="switchTab('img')">🖼️ IMAGE</button><button class="tab" id="tabVid" onclick="switchTab('vid')">🎬 VIDÉO</button></div>
+
+<div class="card" id="cardImg">
+<textarea id="pImg" rows="3" placeholder="Ex: logo or luxe GSIA STUDIO gold navy"></textarea>
+<select id="sImg"><option value="cinematic, ultra detailed, 4k">Cinematic 4K</option><option value="luxury logo design gold navy vector">Logo Luxe</option></select>
+<button class="btn" onclick="genImg()">🚀 GÉNÉRER IMAGE FLUX.1</button>
+<div id="outImg"></div>
+</div>
+
+<div class="card" id="cardVid" style="display:none">
+<textarea id="pVid" rows="3" placeholder="Ex: truck driving Lome road sunset drone cinematic"></textarea>
+<button class="btn" style="background:#8b5cf6;color:#fff" onclick="genVid()">🎬 GÉNÉRER VIDÉO 5s</button>
+<div id="outVid"></div>
+<small style="color:#94a3b8;font-size:10px">Vidéo = 30-50s, c'est normal</small>
 </div>
 
 <div class="pay" id="payModal"><div>
-<h3 style="color:var(--gold)">🔒 Limite gratuite atteinte</h3><p style="font-size:13px;margin:8px 0">Tu as utilisé tes 5 images gratuites DG ! Pour continuer:</p>
-<div style="background:#0f172a;padding:10px;border-radius:10px;margin:8px 0"><b>Pack 20 images = 5.000F</b><br><b>Illimité = 25.000F/mois</b></div>
-<p style="font-size:12px">Paie sur:<br><b>T-Money: 92 81 75 93</b><br><b>Flooz: 98 22 14 95</b><br>Nom: GSIA STUDIO</p>
-<button class="btn" onclick="window.open('https://wa.me/22892817593?text=Jai payé PIC-VID, active moi DG')">📲 J'ai payé - Active-moi</button>
+<h3 style="color:var(--gold)">🔒 5/5 Gratuits utilisés</h3>
+<div style="background:#0f172a;padding:10px;border-radius:10px;margin:10px 0"><b>20 = 5.000F / Illimité = 25.000F</b><br><small>T-Money 92 81 75 93 / Flooz 98 22 14 95</small></div>
+<button class="btn" onclick="window.open('https://wa.me/22892817593?text=JAI PAYE PIC-VID V5')">📲 J'ai payé</button>
 <button class="btn" style="background:#334155;color:#fff" onclick="document.getElementById('payModal').style.display='none'">Fermer</button>
 </div></div>
 
 <script>
-let count = parseInt(localStorage.getItem('gsia_pic_count')||'0');
-function updateCounter(){document.getElementById('counter').innerText = `${5-count} gratuits restants sur 5 - Ensuite 500F/image`;}
-updateCounter();
+function getToken(){return localStorage.getItem('HF_TOKEN')||'';}
+function saveKey(){let k=document.getElementById('hfKey').value.trim();if(!k.startsWith('hf_'))return alert('Clé doit commencer par hf_');localStorage.setItem('HF_TOKEN',k);document.getElementById('keyStatus').innerText='✅ Clé sauvée ! FLUX.1 connecté';document.getElementById('hfKey').value='';checkKey();}
+function checkKey(){let k=getToken();document.getElementById('keyStatus').innerText=k?'✅ FLUX.1 connecté (clé locale sécurisée)':'❌ Colle ta clé hf_ ci-dessus';}
+checkKey();
+let cImg=parseInt(localStorage.getItem('gsia_v5_img')||'0');let cVid=parseInt(localStorage.getItem('gsia_v5_vid')||'0');
+function update(){let t=cImg+cVid;let l=Math.max(0,5-t);document.getElementById('counter').innerText=l+' gratuits restants | Total '+t+'/5';}update();
+function switchTab(t){document.getElementById('cardImg').style.display=t=='img'?'block':'none';document.getElementById('cardVid').style.display=t=='vid'?'block':'none';document.getElementById('tabImg').classList.toggle('active',t=='img');document.getElementById('tabVid').classList.toggle('active',t=='vid');}
 async function genImg(){
- let prompt=document.getElementById('p').value.trim();
- if(!prompt) return alert('Écris quelque chose DG !');
- if(count>=5){ document.getElementById('payModal').style.display='grid'; return; }
- document.getElementById('out').innerHTML='<p style="text-align:center;padding:16px">⏳ Génération en cours... 5s</p>';
- // NETTOYAGE PROMPT pour éviter Image Refused
- let safePrompt = prompt.replace(/logo/gi,'brand emblem').replace(/Gsia/gi,'GSIA company') + ' ' + document.getElementById('s').value;
- let url = `https://image.pollinations.ai/prompt/${encodeURIComponent(safePrompt)}?width=1024&height=1024&seed=${Date.now()}&nologo=true&nofeed=true&enhance=true`;
- 
- let img = new Image();
- img.onload = ()=>{
-   document.getElementById('out').innerHTML=`<img src="${url}"><button class="btn" style="background:#22c55e" onclick="window.open('${url}')">⬇️ Télécharger HD</button><p style="color:#22c55e;font-size:12px">✅ Image ${count+1}/5 gratuite</p>`;
-   count++; localStorage.setItem('gsia_pic_count',count); updateCounter();
- };
- img.onerror = ()=>{
-   // FALLBACK si Pollinations bloque encore
-   let fallback = `https://picsum.photos/seed/${Date.now()}/1024`;
-   document.getElementById('out').innerHTML=`<img src="${fallback}"><p style="font-size:12px;color:#f59e0b">⚠️ Prompt bloqué, image démo. Essaie: "camion Lomé coucher soleil" sans le mot logo</p>`;
- };
- img.src = url;
+ if(cImg+cVid>=5){document.getElementById('payModal').style.display='grid';return;}
+ let tok=getToken();if(!tok)return alert('Colle ta clé hf_ en haut d\'abord DG !');
+ let raw=document.getElementById('pImg').value.trim();if(!raw)return alert('Prompt vide !');
+ document.getElementById('outImg').innerHTML='<p style="text-align:center;padding:16px">⏳ FLUX.1 génère... 12s</p>';
+ let prompt=raw+', '+document.getElementById('sImg').value;
+ try{
+  let r=await fetch("https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-schnell",{method:"POST",headers:{"Authorization":"Bearer "+tok,"Content-Type":"application/json"},body:JSON.stringify({inputs:prompt})});
+  if(!r.ok)throw new Error();let b=await r.blob();let u=URL.createObjectURL(b);
+  document.getElementById('outImg').innerHTML='<img src="'+u+'"><a href="'+u+'" download="gsia.png"><button class="btn" style="background:#22c55e">⬇️ Télécharger IMAGE HD</button></a>';
+  cImg++;localStorage.setItem('gsia_v5_img',cImg);update();
+ }catch(e){
+  let safe=prompt.replace(/logo/gi,'brand emblem');let u2='https://image.pollinations.ai/prompt/'+encodeURIComponent(safe)+'?width=1024&height=1024&model=flux&seed='+Date.now()+'&nologo=true';
+  document.getElementById('outImg').innerHTML='<img src="'+u2+'"><button class="btn" style="background:#22c55e" onclick="window.open(\''+u2+'\')">⬇️ Télécharger Fallback</button>';cImg++;localStorage.setItem('gsia_v5_img',cImg);update();
+ }
+}
+async function genVid(){
+ if(cImg+cVid>=5){document.getElementById('payModal').style.display='grid';return;}
+ let tok=getToken();if(!tok)return alert('Colle ta clé hf_ en haut !');
+ let raw=document.getElementById('pVid').value.trim();if(!raw)return alert('Prompt vidéo vide !');
+ document.getElementById('outVid').innerHTML='<p style="text-align:center;padding:16px">⏳ Vidéo en cours... 40s<br>Ne ferme pas</p>';
+ try{
+  let r=await fetch("https://api-inference.huggingface.co/models/damo-vilab/modelscope-text-to-video-synthesis",{method:"POST",headers:{"Authorization":"Bearer "+tok,"Content-Type":"application/json"},body:JSON.stringify({inputs:raw})});
+  if(!r.ok)throw new Error();let b=await r.blob();let u=URL.createObjectURL(b);
+  document.getElementById('outVid').innerHTML='<video controls autoplay loop src="'+u+'"></video><a href="'+u+'" download="gsia.mp4"><button class="btn" style="background:#22c55e">⬇️ Télécharger MP4</button></a>';cVid++;localStorage.setItem('gsia_v5_vid',cVid);update();
+ }catch(e){document.getElementById('outVid').innerHTML='<p style="color:#f59e0b;padding:12px">⚠️ Serveur vidéo surchargé, réessaie dans 2min. Génère une image d\'abord.</p>';}
 }
 </script>
 </body></html>
