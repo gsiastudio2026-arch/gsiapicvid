@@ -71,7 +71,7 @@ async function genImg(){
  const out=document.getElementById('outImg');const status=document.getElementById('statusImg');
  status.innerText='⏳ FLUX.1 génération 10-15s...';out.innerHTML='...';
  try{
-  const resp=await fetch('https://router.huggingface.co/hf-inference/models/black-forest-labs/FLUX.1-schnell',{
+  const resp=await fetch('https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-xl-base-1.0'
    method:'POST',headers:{'Authorization':'Bearer '+HF_KEY,'Content-Type':'application/json'},
    body:JSON.stringify({inputs:full})
   });
