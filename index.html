@@ -1,18 +1,9 @@
-<!DOCTYPE html><html lang=fr><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>GSIA V6.2</title><style>body{background:#0f172a;color:#fff;font-family:system-ui;padding:16px;margin:0}.card{background:#1e293b;border-radius:16px;padding:16px;margin-bottom:12px;border:1px solid #334155}input,textarea,select{width:100%;background:#0f172a;color:#fff;border:1px solid #475569;border-radius:10px;padding:12px;margin-top:8px;box-sizing:border-box}.btn{width:100%;padding:14px;border-radius:12px;border:none;font-weight:800;margin-top:10px;cursor:pointer}.btn-green{background:#22c55e;color:#000}.btn-yellow{background:#facc15;color:#000}.btn-dark{background:#334155;color:#fff}.badge{font-size:12px;color:#4ade80}</style></head><body><div class=card style=border-color:#facc15><div style=color:#facc15;font-weight:800>🔐 CONFIG ADMIN</div><input id=hfkey type=password placeholder=hf_...><button class="btn btn-green" onclick=saveKey()>✅ Sauvegarder ma clé</button><div id=keyStatus class=badge></div></div><div class=card><textarea id=promptImg rows=3>luxury emblem Gsia studio 2026 gold navy, minimalist vector logo, cinematic 4k, masterpiece</textarea><button class="btn btn-yellow" onclick=genImg()>🚀 GÉNÉRER IMAGE</button><div id=statusImg style=margin-top:8px;font-size:13px;color:#fbbf24></div></div><div class=card id=outImg>Résultat ici</div><script>
-let HF_KEY=localStorage.getItem('gsia_hf_key')||'';document.getElementById('hfkey').value=HF_KEY;if(HF_KEY)document.getElementById('keyStatus').innerText='✅ Connecté';
-function saveKey(){const v=document.getElementById('hfkey').value.trim();if(!v.startsWith('hf_')){alert('hf_ requis');return}localStorage.setItem('gsia_hf_key',v);HF_KEY=v;document.getElementById('keyStatus').innerText='✅ Connecté';alert('Clé sauvée !')}
-async function genImg(){
- const prompt=document.getElementById('promptImg').value.trim();if(!prompt||!HF_KEY){alert('Prompt + clé requis');return}
- const out=document.getElementById('outImg');const status=document.getElementById('statusImg');
- status.innerText='⏳ Génération 12s...';out.innerHTML='...';
- const MODEL='stabilityai/stable-diffusion-xl-base-1.0';
- const URL='https://api-inference.huggingface.co/models/'+MODEL;
- try{
-  const r=await fetch(URL,{method:'POST',headers:{'Authorization':'Bearer '+HF_KEY,'Content-Type':'application/json'},body:JSON.stringify({inputs:prompt})});
-  if(!r.ok){const t=await r.text();throw new Error(t.slice(0,300));}
-  const b=await r.blob();const u=URL.createObjectURL(b);
-  out.innerHTML='<img src="'+u+'" style="width:100%;border-radius:12px"><br><a href="'+u+'" download="gsia.png"><button class="btn btn-dark">⬇️ Télécharger</button></a>';
-  status.innerText='✅ Générée !';
- }catch(e){status.innerText='❌ '+e.message;}
+<!DOCTYPE html><html lang=fr><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>GSIA V7</title><style>body{background:#0f172a;color:#fff;font-family:system-ui;padding:16px} .card{background:#1e293b;border-radius:16px;padding:16px;margin-bottom:12px} .btn{width:100%;padding:14px;border-radius:12px;border:none;font-weight:800;margin-top:10px;background:#facc15;color:#000} textarea{width:100%;background:#0f172a;color:#fff;border:1px solid #475569;border-radius:10px;padding:12px;box-sizing:border-box} img{width:100%;border-radius:12px;margin-top:10px}</style></head><body><div class=card><h3 style=color:#facc15>GSIA PIC-VID V7 - SANS CLÉ</h3><textarea id=p rows=3>luxury emblem Gsia Studio 2026 gold navy elegant, minimalist, cinematic 4k</textarea><button class=btn onclick=go()>🚀 GÉNÉRER MAINTENANT</button><div id=s style=margin-top:8px;color:#fbbf24></div></div><div class=card id=o>Résultat ici</div><script>
+function go(){
+ const p=encodeURIComponent(document.getElementById('p').value);
+ const s=document.getElementById('s');const o=document.getElementById('o');
+ s.innerText='⏳ Génération 5s...';
+ const url='https://image.pollinations.ai/prompt/'+p+'?width=1024&height=1024&nologo=true&seed='+Date.now();
+ o.innerHTML='<img src="'+url+'" onload="document.getElementById(\'s\').innerText=\'✅ Générée !\'" onerror="document.getElementById(\'s\').innerText=\'❌ Re-clique\'"><br><br><a href="'+url+'" target=_blank><button class=btn style=background:#334155;color:#fff>⬇️ Télécharger / Ouvrir</button></a>';
 }
 </script></body></html>
