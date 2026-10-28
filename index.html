@@ -1,102 +1,18 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>GSIA PIC-VID V6</title>
-<style>
-body{background:#0f172a;color:#fff;font-family:system-ui;padding:16px;margin:0}
-.card{background:#1e293b;border-radius:16px;padding:16px;margin-bottom:12px;border:1px solid #334155}
-input,textarea,select{width:100%;background:#0f172a;color:#fff;border:1px solid #475569;border-radius:10px;padding:12px;margin-top:8px;box-sizing:border-box}
-.btn{width:100%;padding:14px;border-radius:12px;border:none;font-weight:800;margin-top:10px;cursor:pointer}
-.btn-green{background:#22c55e;color:#000}
-.btn-yellow{background:#facc15;color:#000}
-.btn-dark{background:#334155;color:#fff}
-.badge{font-size:12px;color:#4ade80}
-.tabs{display:flex;gap:8px;margin:12px 0}
-.tab{flex:1;padding:12px;border-radius:12px;text-align:center;font-weight:800;cursor:pointer;background:#1e293b;border:1px solid #334155}
-.tab.active{background:#facc15;color:#000}
-#outImg img,#outVid img{width:100%;border-radius:12px;margin-top:10px}
-</style>
-</head>
-<body>
-<div class="card" style="border-color:#facc15">
-<div style="color:#facc15;font-weight:800">🔐 CONFIG ADMIN</div>
-<input id="hfkey" type="password" placeholder="Colle ton hf_... ici">
-<button class="btn btn-green" onclick="saveKey()">✅ Sauvegarder ma clé FLUX.1</button>
-<div id="keyStatus" class="badge"></div>
-</div>
-<div class="tabs">
-<div id="tabImg" class="tab active" onclick="switchTab('img')">🖼️ IMAGE</div>
-<div id="tabVid" class="tab" onclick="switchTab('vid')">🎬 VIDÉO</div>
-</div>
-<div id="panelImg">
-<div class="card">
-<textarea id="promptImg" rows="3" placeholder="luxury emblem GSIA STUDIO 2026 gold navy"></textarea>
-<select id="styleImg"><option>Cinematic 4K</option><option>Luxury Gold</option><option>Minimalist Vector</option></select>
-<button class="btn btn-yellow" onclick="genImg()">🚀 GÉNÉRER IMAGE FLUX.1</button>
-<div id="statusImg" style="margin-top:8px;font-size:13px;color:#fbbf24"></div>
-</div>
-<div class="card" id="outImg">Résultat ici</div>
-</div>
-<div id="panelVid" style="display:none">
-<div class="card">
-<textarea id="promptVid" rows="3" placeholder="camion MAN port Lomé sunset cinematic"></textarea>
-<button class="btn btn-yellow" onclick="genVid()">🎬 GÉNÉRER FRAME VIDÉO</button>
-<div id="statusVid" style="margin-top:8px;font-size:13px;color:#fbbf24"></div>
-</div>
-<div class="card" id="outVid">Résultat vidéo ici</div>
-</div>
-<script>
-let HF_KEY=localStorage.getItem('gsia_hf_key')||'';
-document.getElementById('hfkey').value=HF_KEY;
-if(HF_KEY)document.getElementById('keyStatus').innerText='✅ FLUX.1 connecté (clé locale sécurisée)';
-function saveKey(){
- const v=document.getElementById('hfkey').value.trim();
- if(!v.startsWith('hf_')){alert('clé doit commencer par hf_');return}
- localStorage.setItem('gsia_hf_key',v);HF_KEY=v;
- document.getElementById('keyStatus').innerText='✅ FLUX.1 connecté';
- alert('Clé sauvée !');
-}
-function switchTab(t){
- document.getElementById('panelImg').style.display=t==='img'?'block':'none';
- document.getElementById('panelVid').style.display=t==='vid'?'block':'none';
- document.getElementById('tabImg').className=t==='img'?'tab active':'tab';
- document.getElementById('tabVid').className=t==='vid'?'tab active':'tab';
-}
+<!DOCTYPE html><html lang=fr><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>GSIA V6.2</title><style>body{background:#0f172a;color:#fff;font-family:system-ui;padding:16px;margin:0}.card{background:#1e293b;border-radius:16px;padding:16px;margin-bottom:12px;border:1px solid #334155}input,textarea,select{width:100%;background:#0f172a;color:#fff;border:1px solid #475569;border-radius:10px;padding:12px;margin-top:8px;box-sizing:border-box}.btn{width:100%;padding:14px;border-radius:12px;border:none;font-weight:800;margin-top:10px;cursor:pointer}.btn-green{background:#22c55e;color:#000}.btn-yellow{background:#facc15;color:#000}.btn-dark{background:#334155;color:#fff}.badge{font-size:12px;color:#4ade80}</style></head><body><div class=card style=border-color:#facc15><div style=color:#facc15;font-weight:800>🔐 CONFIG ADMIN</div><input id=hfkey type=password placeholder=hf_...><button class="btn btn-green" onclick=saveKey()>✅ Sauvegarder ma clé</button><div id=keyStatus class=badge></div></div><div class=card><textarea id=promptImg rows=3>luxury emblem Gsia studio 2026 gold navy, minimalist vector logo, cinematic 4k, masterpiece</textarea><button class="btn btn-yellow" onclick=genImg()>🚀 GÉNÉRER IMAGE</button><div id=statusImg style=margin-top:8px;font-size:13px;color:#fbbf24></div></div><div class=card id=outImg>Résultat ici</div><script>
+let HF_KEY=localStorage.getItem('gsia_hf_key')||'';document.getElementById('hfkey').value=HF_KEY;if(HF_KEY)document.getElementById('keyStatus').innerText='✅ Connecté';
+function saveKey(){const v=document.getElementById('hfkey').value.trim();if(!v.startsWith('hf_')){alert('hf_ requis');return}localStorage.setItem('gsia_hf_key',v);HF_KEY=v;document.getElementById('keyStatus').innerText='✅ Connecté';alert('Clé sauvée !')}
 async function genImg(){
- const prompt=document.getElementById('promptImg').value.trim();
- const style=document.getElementById('styleImg').value;
- if(!prompt||!HF_KEY){alert('Prompt + clé requis');return}
- const full=prompt+', '+style+', high detail, 4k, masterpiece';
+ const prompt=document.getElementById('promptImg').value.trim();if(!prompt||!HF_KEY){alert('Prompt + clé requis');return}
  const out=document.getElementById('outImg');const status=document.getElementById('statusImg');
- status.innerText='⏳ FLUX.1 génération 10-15s...';out.innerHTML='...';
+ status.innerText='⏳ Génération 12s...';out.innerHTML='...';
+ const MODEL='stabilityai/stable-diffusion-xl-base-1.0';
+ const URL='https://api-inference.huggingface.co/models/'+MODEL;
  try{
-  const resp=await fetch('https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-xl-base-1.0'
-   method:'POST',headers:{'Authorization':'Bearer '+HF_KEY,'Content-Type':'application/json'},
-   body:JSON.stringify({inputs:full})
-  });
-  if(!resp.ok){const t=await resp.text();throw new Error('HF '+resp.status+': '+t.slice(0,200));}
-  const blob=await resp.blob();const url=URL.createObjectURL(blob);
-  out.innerHTML='<img src="'+url+'"><br><a href="'+url+'" download="gsia.png"><button class="btn btn-dark">⬇️ Télécharger</button></a>';
-  status.innerText='✅ Image générée !';
- }catch(e){status.innerText='❌ '+e.message+' Attends 60s et re-clique (modèle se réveille)';}
-}
-async function genVid(){
- const prompt=document.getElementById('promptVid').value.trim();
- if(!prompt||!HF_KEY){alert('Prompt + clé requis');return}
- const out=document.getElementById('outVid');const status=document.getElementById('statusVid');
- status.innerText='⏳ Frame vidéo...';
- try{
-  const resp=await fetch('https://router.huggingface.co/hf-inference/models/black-forest-labs/FLUX.1-schnell',{
-   method:'POST',headers:{'Authorization':'Bearer '+HF_KEY,'Content-Type':'application/json'},
-   body:JSON.stringify({inputs:prompt+', cinematic video frame, 4k'})
-  });
-  if(!resp.ok)throw new Error('HF '+resp.status);
-  const blob=await resp.blob();const url=URL.createObjectURL(blob);
-  out.innerHTML='<img src="'+url+'"><br><a href="'+url+'" download="gsia-frame.png"><button class="btn btn-dark">⬇️ Télécharger FRAME</button></a>';
-  status.innerText='✅ Frame prête';
+  const r=await fetch(URL,{method:'POST',headers:{'Authorization':'Bearer '+HF_KEY,'Content-Type':'application/json'},body:JSON.stringify({inputs:prompt})});
+  if(!r.ok){const t=await r.text();throw new Error(t.slice(0,300));}
+  const b=await r.blob();const u=URL.createObjectURL(b);
+  out.innerHTML='<img src="'+u+'" style="width:100%;border-radius:12px"><br><a href="'+u+'" download="gsia.png"><button class="btn btn-dark">⬇️ Télécharger</button></a>';
+  status.innerText='✅ Générée !';
  }catch(e){status.innerText='❌ '+e.message;}
 }
-</script>
-</body>
-</html>
+</script></body></html>
